@@ -6,11 +6,11 @@ const CalendarPage = () => {
   const { upcomingAssignments, syllabi } = useSyllabus()
 
   const downloadAllCalendar = () => {
-    window.open('/api/calendar/all', '_blank')
+    window.open(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/calendar/all`, '_blank')
   }
 
   const downloadSyllabusCalendar = (syllabusId) => {
-    window.open(`/api/calendar/syllabus/${syllabusId}`, '_blank')
+    window.open(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/calendar/syllabus/${syllabusId}`, '_blank')
   }
 
   const getDaysUntilDue = (dueDate) => {

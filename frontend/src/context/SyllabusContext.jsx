@@ -3,6 +3,9 @@ import axios from 'axios'
 
 const SyllabusContext = createContext()
 
+// API base URL - will use environment variable in production
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+
 const initialState = {
   syllabi: [],
   loading: false,
@@ -45,7 +48,7 @@ export const SyllabusProvider = ({ children }) => {
   const fetchSyllabi = async () => {
     dispatch({ type: 'SET_LOADING', payload: true })
     try {
-      const response = await axios.get('/api/syllabi')
+      const response = await axios.get(`${API_BASE_URL}/api/syllabi`)
       dispatch({ type: 'SET_SYLLABI', payload: response.data })
     } catch (error) {
       dispatch({ type: 'SET_ERROR', payload: error.message })
@@ -54,7 +57,7 @@ export const SyllabusProvider = ({ children }) => {
 
   const fetchUpcomingAssignments = async () => {
     try {
-      const response = await axios.get('/api/calendar/upcoming')
+      const response = await axios.get(`${API_BASE_URL}/api/calendar/upcoming`)
       dispatch({ type: 'SET_UPCOMING_ASSIGNMENTS', payload: response.data })
     } catch (error) {
       console.error('Error fetching upcoming assignments:', error)
@@ -63,7 +66,7 @@ export const SyllabusProvider = ({ children }) => {
 
   const addSyllabus = async (syllabusData) => {
     try {
-      const response = await axios.post('/api/syllabi', syllabusData)
+      const response = await axios.post(`${API_BASE_URL}/api/syllabi`, syllabusData)
       dispatch({ type: 'ADD_SYLLABUS', payload: response.data })
       return response.data
     } catch (error) {
@@ -74,7 +77,7 @@ export const SyllabusProvider = ({ children }) => {
 
   const updateSyllabus = async (id, syllabusData) => {
     try {
-      const response = await axios.put(`/api/syllabi/${id}`, syllabusData)
+      const response = await axios.put(`${API_BASE_URL}/api/syllabi/${id}`, syllabusData)
       dispatch({ type: 'UPDATE_SYLLABUS', payload: response.data })
       return response.data
     } catch (error) {
@@ -85,7 +88,7 @@ export const SyllabusProvider = ({ children }) => {
 
   const deleteSyllabus = async (id) => {
     try {
-      await axios.delete(`/api/syllabi/${id}`)
+      await axios.delete(`${API_BASE_URL}/api/syllabi/${id}`)
       dispatch({ type: 'DELETE_SYLLABUS', payload: id })
     } catch (error) {
       dispatch({ type: 'SET_ERROR', payload: error.message })
@@ -95,7 +98,7 @@ export const SyllabusProvider = ({ children }) => {
 
   const uploadSyllabus = async (formData) => {
     try {
-      const response = await axios.post('/api/syllabi/upload', formData, {
+      const response = await axios.post(`${API_BASE_URL}/api/syllabi/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

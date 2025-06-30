@@ -47,7 +47,7 @@ const SyllabusDetail = () => {
 
   const fetchSyllabus = async () => {
     try {
-      const response = await axios.get(`/api/syllabi/${id}`)
+      const response = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/syllabi/${id}`)
       setSyllabus(response.data)
       setFormData(response.data)
     } catch (error) {
@@ -103,7 +103,7 @@ const SyllabusDetail = () => {
     if (!newAssignment.title || !newAssignment.dueDate) return
 
     try {
-      const response = await axios.post(`/api/syllabi/${id}/assignments`, newAssignment)
+      const response = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/syllabi/${id}/assignments`, newAssignment)
       setSyllabus(response.data)
       setNewAssignment({
         title: '',
@@ -120,7 +120,7 @@ const SyllabusDetail = () => {
   const handleDeleteAssignment = async (assignmentId) => {
     if (window.confirm('Are you sure you want to delete this assignment?')) {
       try {
-        const response = await axios.delete(`/api/syllabi/${id}/assignments/${assignmentId}`)
+        const response = await axios.delete(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/syllabi/${id}/assignments/${assignmentId}`)
         setSyllabus(response.data)
       } catch (error) {
         console.error('Failed to delete assignment:', error)
@@ -129,7 +129,7 @@ const SyllabusDetail = () => {
   }
 
   const downloadCalendar = () => {
-    window.open(`/api/calendar/syllabus/${id}`, '_blank')
+    window.open(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/calendar/syllabus/${id}`, '_blank')
   }
 
   if (loading) {
