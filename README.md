@@ -1,15 +1,15 @@
-# Syllabus App
+# SmartSyllabus
 
 [![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
 [![React](https://img.shields.io/badge/React-18-blue.svg)](https://reactjs.org/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-5+-green.svg)](https://www.mongodb.com/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-A comprehensive syllabus management system that allows users to upload, organize, and track course syllabi with automatic text extraction, assignment management, and calendar integration.
+A comprehensive syllabus management system that allows users to upload, organize, and track course syllabi with automatic text extraction, assignment tracking, and calendar integration. SmartSyllabus makes managing academic schedules effortless with AI-powered text extraction and intelligent assignment organization.
 
 ## 🌟 Live Demo
 
-[View Live Demo](https://your-demo-link.com) | [Report Bug](https://github.com/YOUR_USERNAME/syllabus-app/issues) | [Request Feature](https://github.com/YOUR_USERNAME/syllabus-app/issues)
+[View Live Demo](https://your-demo-link.com) | [Report Bug](https://github.com/ysyed9/SmartSyllabus/issues) | [Request Feature](https://github.com/ysyed9/SmartSyllabus/issues)
 
 ## Features
 
@@ -66,8 +66,8 @@ A comprehensive syllabus management system that allows users to upload, organize
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/YOUR_USERNAME/syllabus-app.git
-   cd syllabus-app
+   git clone https://github.com/ysyed9/SmartSyllabus.git
+   cd SmartSyllabus
    ```
 
 2. **Install backend dependencies**
@@ -206,10 +206,19 @@ The application supports:
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
+## 🤝 Contributing to SmartSyllabus
+
+We welcome contributions! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
+
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## Support
 
-For support and questions, please open an issue in the GitHub repository. 
+For support and questions, please open an issue in the [GitHub repository](https://github.com/ysyed9/SmartSyllabus/issues).
+
+## 📞 Contact
+
+- **GitHub**: [@ysyed9](https://github.com/ysyed9)
+- **Repository**: [SmartSyllabus](https://github.com/ysyed9/SmartSyllabus) 
