@@ -9,7 +9,14 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: [
+    'https://smartsyllabus-aw4fxeytw-younussyed989s-projects.vercel.app',
+    'https://smartsyllabus-omp6cb4sz-younussyed989s-projects.vercel.app',
+    'http://localhost:3000'
+  ],
+  credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
