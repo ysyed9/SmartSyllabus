@@ -3,7 +3,7 @@
 [![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
 [![React](https://img.shields.io/badge/React-18-blue.svg)](https://reactjs.org/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-5+-green.svg)](https://www.mongodb.com/)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 
 A comprehensive syllabus management system that allows users to upload, organize, and track course syllabi with automatic text extraction, assignment tracking, and calendar integration. SmartSyllabus makes managing academic schedules effortless with AI-powered text extraction and intelligent assignment organization.
 
