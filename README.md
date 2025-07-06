@@ -9,7 +9,7 @@ A comprehensive syllabus management system that allows users to upload, organize
 
 ## 🌟 Live Demo
 
-[View Live Demo](https://smartsyllabus-5zsqhwc82-younussyed989s-projects.vercel.app) | [Report Bug](https://github.com/ysyed9/SmartSyllabus/issues) | [Request Feature](https://github.com/ysyed9/SmartSyllabus/issues)
+[View Live Demo]((https://smartsyllabus.vercel.app/)) | [Report Bug](https://github.com/ysyed9/SmartSyllabus/issues) | [Request Feature](https://github.com/ysyed9/SmartSyllabus/issues)
 
 ## Features
 
