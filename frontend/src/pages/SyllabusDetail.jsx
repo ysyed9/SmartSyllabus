@@ -17,6 +17,9 @@ import {
 import { format } from 'date-fns'
 import axios from 'axios'
 
+// API base URL - use the same as in SyllabusContext
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://smartsyllabus-backend.vercel.app'
+
 const SyllabusDetail = () => {
   const { id } = useParams()
   const navigate = useNavigate()
@@ -47,7 +50,7 @@ const SyllabusDetail = () => {
 
   const fetchSyllabus = async () => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_URL || 'https://backend-5itl4030f-younussyed989s-projects.vercel.app'}/api/syllabi/${id}`)
+      const response = await axios.get(`${API_BASE_URL}/api/syllabi/${id}`)
       setSyllabus(response.data)
       setFormData(response.data)
     } catch (error) {
@@ -103,7 +106,7 @@ const SyllabusDetail = () => {
     if (!newAssignment.title || !newAssignment.dueDate) return
 
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_URL || 'https://backend-5itl4030f-younussyed989s-projects.vercel.app'}/api/syllabi/${id}/assignments`, newAssignment)
+      const response = await axios.post(`${API_BASE_URL}/api/syllabi/${id}/assignments`, newAssignment)
       setSyllabus(response.data)
       setNewAssignment({
         title: '',
@@ -120,7 +123,7 @@ const SyllabusDetail = () => {
   const handleDeleteAssignment = async (assignmentId) => {
     if (window.confirm('Are you sure you want to delete this assignment?')) {
       try {
-        const response = await axios.delete(`${import.meta.env.VITE_API_URL || 'https://backend-5itl4030f-younussyed989s-projects.vercel.app'}/api/syllabi/${id}/assignments/${assignmentId}`)
+        const response = await axios.delete(`${API_BASE_URL}/api/syllabi/${id}/assignments/${assignmentId}`)
         setSyllabus(response.data)
       } catch (error) {
         console.error('Failed to delete assignment:', error)
@@ -129,7 +132,7 @@ const SyllabusDetail = () => {
   }
 
   const downloadCalendar = () => {
-    window.open(`${import.meta.env.VITE_API_URL || 'https://backend-5itl4030f-younussyed989s-projects.vercel.app'}/api/calendar/syllabus/${id}`, '_blank')
+    window.open(`${API_BASE_URL}/api/calendar/syllabus/${id}`, '_blank')
   }
 
   if (loading) {

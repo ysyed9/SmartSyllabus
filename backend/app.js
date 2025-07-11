@@ -11,6 +11,7 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(cors({
   origin: [
+    'https://smartsyllabus.vercel.app',
     'https://smartsyllabus-aw4fxeytw-younussyed989s-projects.vercel.app',
     'https://smartsyllabus-omp6cb4sz-younussyed989s-projects.vercel.app',
     'http://localhost:3000'

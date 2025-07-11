@@ -2,15 +2,18 @@ import { useSyllabus } from '../context/SyllabusContext'
 import { Calendar as CalendarIcon, Download, Clock, BookOpen } from 'lucide-react'
 import { format } from 'date-fns'
 
+// API base URL - use the same as in SyllabusContext
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://smartsyllabus-backend.vercel.app'
+
 const CalendarPage = () => {
   const { upcomingAssignments, syllabi } = useSyllabus()
 
   const downloadAllCalendar = () => {
-    window.open(`${import.meta.env.VITE_API_URL || 'https://backend-5itl4030f-younussyed989s-projects.vercel.app'}/api/calendar/all`, '_blank')
+    window.open(`${API_BASE_URL}/api/calendar/all`, '_blank')
   }
 
   const downloadSyllabusCalendar = (syllabusId) => {
-    window.open(`${import.meta.env.VITE_API_URL || 'https://backend-5itl4030f-younussyed989s-projects.vercel.app'}/api/calendar/syllabus/${syllabusId}`, '_blank')
+    window.open(`${API_BASE_URL}/api/calendar/syllabus/${syllabusId}`, '_blank')
   }
 
   const getDaysUntilDue = (dueDate) => {
