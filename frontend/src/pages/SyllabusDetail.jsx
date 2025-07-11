@@ -18,7 +18,7 @@ import { format } from 'date-fns'
 import axios from 'axios'
 
 // API base URL - use the same as in SyllabusContext
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://smartsyllabus-backend.vercel.app'
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://smartsyllabus-backend-bhhx0t5z4-younussyed989s-projects.vercel.app/api'
 
 const SyllabusDetail = () => {
   const { id } = useParams()
