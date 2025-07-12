@@ -4,12 +4,34 @@
 [![React](https://img.shields.io/badge/React-18-blue.svg)](https://reactjs.org/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-5+-green.svg)](https://www.mongodb.com/)
 
-
 A comprehensive syllabus management system that allows users to upload, organize, and track course syllabi with automatic text extraction, assignment tracking, and calendar integration. SmartSyllabus makes managing academic schedules effortless with AI-powered text extraction and intelligent assignment organization.
 
 ## 🌟 Live Demo
 
-[View Live Demo](https://smartsyllabus.vercel.app/) | [Report Bug](https://github.com/ysyed9/SmartSyllabus/issues) | [Request Feature](https://github.com/ysyed9/SmartSyllabus/issues)
+[View Live Demo](https://smart-syllabus-dormcuv64-younussyed989s-projects.vercel.app/) | [Report Bug](https://github.com/ysyed9/SmartSyllabus/issues) | [Request Feature](https://github.com/ysyed9/SmartSyllabus/issues)
+
+## 🚀 Quick Start
+
+Want to run this project locally? Follow these steps:
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/ysyed9/SmartSyllabus.git
+cd SmartSyllabus
+
+# 2. Install dependencies
+cd backend && npm install
+cd ../frontend && npm install
+
+# 3. Set up environment variables (see Environment Setup below)
+
+# 4. Start the development servers
+# Terminal 1 - Backend
+cd backend && npm run dev
+
+# Terminal 2 - Frontend  
+cd frontend && npm run dev
+```
 
 ## Features
 
@@ -62,6 +84,33 @@ A comprehensive syllabus management system that allows users to upload, organize
 - MongoDB (local or cloud instance)
 - npm or yarn package manager
 
+## Environment Setup
+
+### Backend Environment Variables
+
+Create a `.env` file in the `backend` directory:
+
+```env
+# MongoDB Connection (Required)
+MONGODB_URI=mongodb+srv://your-username:your-password@your-cluster.mongodb.net/syllabus-app?retryWrites=true&w=majority
+
+# Server Configuration (Optional)
+PORT=5000
+NODE_ENV=development
+```
+
+### Frontend Environment Variables
+
+Create a `.env.local` file in the `frontend` directory:
+
+```env
+# Backend API URL (Required)
+VITE_API_URL=http://localhost:5000/api
+
+# For production, use your deployed backend URL:
+# VITE_API_URL=https://your-backend-url.onrender.com/api
+```
+
 ## Installation
 
 1. **Clone the repository**
@@ -82,13 +131,7 @@ A comprehensive syllabus management system that allows users to upload, organize
    npm install
    ```
 
-4. **Set up environment variables**
-   
-   Create a `.env` file in the backend directory:
-   ```env
-   MONGODB_URI=mongodb+srv://younussyed787070:<naruto009>@smartsyllabus.tiz58j8.mongodb.net/syllabus-app?retryWrites=true&w=majority&appName=SmartSyllabus
-   PORT=5000
-   ```
+4. **Set up environment variables** (see Environment Setup above)
 
 5. **Start MongoDB**
    
@@ -128,6 +171,32 @@ A comprehensive syllabus management system that allows users to upload, organize
    cd backend
    npm start
    ```
+
+## 🚀 Deployment
+
+### Backend Deployment (Render)
+
+1. **Fork this repository**
+2. **Connect to Render**:
+   - Go to [Render Dashboard](https://dashboard.render.com/)
+   - Click "New Web Service"
+   - Connect your GitHub repository
+   - Set build command: `npm install`
+   - Set start command: `npm start`
+   - Add environment variables:
+     - `MONGODB_URI`: Your MongoDB connection string
+     - `NODE_ENV`: `production`
+
+### Frontend Deployment (Vercel)
+
+1. **Connect to Vercel**:
+   - Go to [Vercel Dashboard](https://vercel.com/dashboard)
+   - Import your GitHub repository
+   - Set root directory to `frontend`
+   - Add environment variable:
+     - `VITE_API_URL`: Your deployed backend URL (e.g., `https://your-app.onrender.com/api`)
+
+2. **Deploy automatically** on every push to main branch
 
 ## API Endpoints
 
@@ -197,6 +266,36 @@ The application supports:
   completed: Boolean
 }
 ```
+
+## 🔧 Troubleshooting
+
+### Common Issues
+
+1. **CORS Errors**
+   - Ensure your backend CORS configuration includes your frontend domain
+   - Check that environment variables are set correctly
+
+2. **MongoDB Connection Issues**
+   - Verify your MongoDB connection string
+   - Ensure your IP is whitelisted in MongoDB Atlas
+   - Check that the database name is correct
+
+3. **File Upload Failures**
+   - Check file size (max 10MB)
+   - Verify file format is supported
+   - Ensure uploads directory has write permissions
+
+4. **Build Errors**
+   - Clear node_modules and reinstall: `rm -rf node_modules && npm install`
+   - Check Node.js version compatibility
+   - Verify all environment variables are set
+
+### Development Tips
+
+- Use `npm run dev` for both frontend and backend during development
+- Check browser console and server logs for detailed error messages
+- Use MongoDB Compass for database visualization
+- Test API endpoints with Postman or similar tools
 
 ## Contributing
 

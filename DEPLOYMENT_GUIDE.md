@@ -1,174 +1,214 @@
-# SmartSyllabus Deployment Guide
+# 🚀 SmartSyllabus Deployment Guide
 
-This guide will help you deploy the frontend to Vercel and the backend to Render.
+This guide will help you deploy SmartSyllabus to production using Render (backend) and Vercel (frontend).
 
-## 🚀 Frontend Deployment (Vercel)
+## 📋 Prerequisites
 
-### Step 1: Prepare Frontend
-
-1. **Navigate to frontend directory:**
-   ```bash
-   cd frontend
-   ```
-
-2. **Install Vercel CLI (if not already installed):**
-   ```bash
-   npm install -g vercel
-   ```
-
-3. **Login to Vercel:**
-   ```bash
-   vercel login
-   ```
-
-### Step 2: Deploy Frontend
-
-1. **Deploy to Vercel:**
-   ```bash
-   vercel
-   ```
-
-2. **Follow the prompts:**
-   - Link to existing project or create new one
-   - Set project name (e.g., `smartsyllabus-frontend`)
-   - Confirm deployment settings
-
-3. **Set Environment Variables in Vercel Dashboard:**
-   - Go to your project settings
-   - Navigate to Environment Variables
-   - Add: `VITE_API_URL=https://your-render-backend-url.onrender.com/api`
-
-### Step 3: Get Frontend URL
-
-After deployment, note your frontend URL (e.g., `https://smartsyllabus-frontend.vercel.app`)
-
----
+- GitHub account
+- MongoDB Atlas account
+- Render account (free tier available)
+- Vercel account (free tier available)
 
 ## 🔧 Backend Deployment (Render)
 
-### Step 1: Prepare Backend
+### Step 1: Prepare Your Repository
 
-1. **Navigate to backend directory:**
-   ```bash
-   cd backend
-   ```
-
-2. **Ensure all files are committed to Git**
+1. **Fork this repository** to your GitHub account
+2. **Clone your fork** locally
+3. **Update environment variables** in your local `.env` file
 
 ### Step 2: Deploy to Render
 
 1. **Go to [Render Dashboard](https://dashboard.render.com/)**
+2. **Click "New Web Service"**
+3. **Connect your GitHub repository**
+4. **Configure the service:**
+   - **Name**: `smartsyllabus-backend` (or your preferred name)
+   - **Root Directory**: Leave empty (deploy from root)
+   - **Runtime**: `Node`
+   - **Build Command**: `cd backend && npm install`
+   - **Start Command**: `cd backend && npm start`
+   - **Plan**: Free
 
-2. **Create New Web Service:**
-   - Click "New +"
-   - Select "Web Service"
-   - Connect your GitHub repository
+### Step 3: Environment Variables
 
-3. **Configure the service:**
-   - **Name:** `smartsyllabus-backend`
-   - **Environment:** `Node`
-   - **Build Command:** `npm install`
-   - **Start Command:** `node app.js`
-   - **Plan:** Free
+Add these environment variables in Render:
 
-4. **Set Environment Variables:**
-   - `NODE_ENV` = `production`
-   - `MONGODB_URI` = `mongodb+srv://younussyed787070:B6TLB5EzPJiGsMxF@smartsyllabus.tiz58j8.mongodb.net/smartsyllabus?retryWrites=true&w=majority`
-   - `PORT` = `10000`
+```env
+MONGODB_URI=mongodb+srv://your-username:your-password@your-cluster.mongodb.net/syllabus-app?retryWrites=true&w=majority
+NODE_ENV=production
+PORT=10000
+```
 
-5. **Click "Create Web Service"**
+### Step 4: Deploy
 
-### Step 3: Get Backend URL
+1. **Click "Create Web Service"**
+2. **Wait for deployment** (usually 2-5 minutes)
+3. **Copy your backend URL** (e.g., `https://your-app.onrender.com`)
 
-After deployment, note your backend URL (e.g., `https://smartsyllabus-backend.onrender.com`)
+## 🎨 Frontend Deployment (Vercel)
 
----
+### Step 1: Deploy to Vercel
 
-## 🔗 Connect Frontend to Backend
+1. **Go to [Vercel Dashboard](https://vercel.com/dashboard)**
+2. **Click "New Project"**
+3. **Import your GitHub repository**
+4. **Configure the project:**
+   - **Framework Preset**: Vite
+   - **Root Directory**: `frontend`
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist`
+   - **Install Command**: `npm install`
 
-### Step 1: Update Frontend Environment Variable
+### Step 2: Environment Variables
 
-1. **Go to your Vercel dashboard**
-2. **Navigate to your frontend project settings**
-3. **Update the environment variable:**
-   ```
-   VITE_API_URL=https://your-actual-render-backend-url.onrender.com/api
-   ```
+Add this environment variable in Vercel:
 
-### Step 2: Update Backend CORS (if needed)
+```env
+VITE_API_URL=https://your-backend-url.onrender.com/api
+```
 
-If you get CORS errors, update the CORS origins in:
-- `backend/app.js`
-- `backend/api/index.js`
+### Step 3: Deploy
 
-Add your frontend URL to the allowed origins.
+1. **Click "Deploy"**
+2. **Wait for deployment** (usually 1-2 minutes)
+3. **Copy your frontend URL** (e.g., `https://your-app.vercel.app`)
 
----
+## 🔄 Continuous Deployment
 
-## 🧪 Test Your Deployment
+Both Render and Vercel will automatically redeploy when you push changes to your main branch.
 
-### Test Backend:
+## 🌐 Custom Domains (Optional)
+
+### Render (Backend)
+1. Go to your Render service
+2. Click "Settings" → "Custom Domains"
+3. Add your domain and configure DNS
+
+### Vercel (Frontend)
+1. Go to your Vercel project
+2. Click "Settings" → "Domains"
+3. Add your domain and configure DNS
+
+## 🔧 Post-Deployment Configuration
+
+### CORS Configuration
+
+If you're using a custom domain, update the CORS configuration in `backend/app.js`:
+
+```javascript
+app.use(cors({
+  origin: [
+    'https://your-frontend-domain.com',
+    'http://localhost:3000'
+  ],
+  credentials: true
+}));
+```
+
+### Environment Variables
+
+Make sure all environment variables are set correctly:
+
+**Backend (Render):**
+- `MONGODB_URI`: Your MongoDB connection string
+- `NODE_ENV`: `production`
+- `PORT`: `10000` (Render's default)
+
+**Frontend (Vercel):**
+- `VITE_API_URL`: Your backend URL + `/api`
+
+## 🧪 Testing Your Deployment
+
+### Backend Testing
 ```bash
 curl https://your-backend-url.onrender.com/api/hello
 ```
 
-### Test Frontend:
-Visit your frontend URL and check if it can connect to the backend.
-
----
-
-## 📝 Environment Variables Summary
-
-### Frontend (Vercel):
-```
-VITE_API_URL=https://your-render-backend-url.onrender.com/api
+Expected response:
+```json
+{
+  "message": "Hello from SmartSyllabus backend!",
+  "timestamp": "2024-01-01T00:00:00.000Z",
+  "method": "GET",
+  "url": "/api/hello"
+}
 ```
 
-### Backend (Render):
-```
-NODE_ENV=production
-MONGODB_URI=mongodb+srv://younussyed787070:B6TLB5EzPJiGsMxF@smartsyllabus.tiz58j8.mongodb.net/smartsyllabus?retryWrites=true&w=majority
-PORT=10000
-```
-
----
+### Frontend Testing
+1. Visit your Vercel URL
+2. Try uploading a syllabus file
+3. Check that API calls work without CORS errors
 
 ## 🔍 Troubleshooting
 
-### Common Issues:
+### Common Issues
 
-1. **CORS Errors:**
-   - Check that your frontend URL is in the backend's CORS origins
-   - Update CORS settings in both `app.js` and `api/index.js`
+1. **CORS Errors**
+   - Verify your backend URL in `VITE_API_URL`
+   - Check CORS configuration in backend
+   - Ensure domains are correctly listed
 
-2. **API Connection Issues:**
-   - Verify the `VITE_API_URL` environment variable is set correctly
-   - Check that the backend URL is accessible
+2. **MongoDB Connection Issues**
+   - Verify connection string format
+   - Check IP whitelist in MongoDB Atlas
+   - Ensure database name is correct
 
-3. **MongoDB Connection:**
-   - Ensure your MongoDB Atlas cluster allows connections from Render's IP ranges
+3. **Build Failures**
+   - Check Node.js version compatibility
+   - Verify all dependencies are installed
+   - Review build logs for specific errors
 
-4. **Build Errors:**
-   - Check that all dependencies are in `package.json`
-   - Verify the build commands are correct
+4. **File Upload Issues**
+   - Check file size limits
+   - Verify upload directory permissions
+   - Ensure proper MIME type handling
 
-### Useful Commands:
+### Debugging Tips
 
-```bash
-# Test backend locally
-cd backend && npm start
+- **Check Render logs** for backend issues
+- **Check Vercel logs** for frontend issues
+- **Use browser DevTools** to inspect network requests
+- **Test API endpoints** with Postman or curl
 
-# Test frontend locally
-cd frontend && npm run dev
+## 📊 Monitoring
 
-# Check environment variables
-echo $VITE_API_URL
-```
+### Render Monitoring
+- View logs in Render dashboard
+- Monitor resource usage
+- Set up alerts for downtime
+
+### Vercel Monitoring
+- View deployment status
+- Monitor performance metrics
+- Check function execution logs
+
+## 🔐 Security Considerations
+
+1. **Environment Variables**: Never commit sensitive data
+2. **CORS**: Only allow necessary domains
+3. **File Uploads**: Validate file types and sizes
+4. **MongoDB**: Use strong passwords and IP whitelisting
+5. **HTTPS**: Always use HTTPS in production
+
+## 📈 Scaling
+
+### Render Scaling
+- Upgrade to paid plan for more resources
+- Configure auto-scaling based on traffic
+- Set up load balancing for multiple instances
+
+### Vercel Scaling
+- Automatic scaling based on traffic
+- Edge functions for better performance
+- CDN distribution worldwide
+
+## 🆘 Support
+
+- **Render Support**: [Render Documentation](https://render.com/docs)
+- **Vercel Support**: [Vercel Documentation](https://vercel.com/docs)
+- **GitHub Issues**: [SmartSyllabus Issues](https://github.com/ysyed9/SmartSyllabus/issues)
 
 ---
 
-## 🎉 Success!
-
-Once both services are deployed and connected, your SmartSyllabus app will be live at:
-- **Frontend:** `https://your-frontend-url.vercel.app`
-- **Backend:** `https://your-backend-url.onrender.com/api/*` 
+🎉 **Congratulations!** Your SmartSyllabus application is now deployed and ready for production use. 
