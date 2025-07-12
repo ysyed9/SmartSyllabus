@@ -43,6 +43,16 @@ console.log('Setting up routes...');
 app.use('/api/syllabi', require('./routes/syllabi'));
 app.use('/api/calendar', require('./routes/calendar'));
 
+// Add /api/hello route for Render deployments
+app.get('/api/hello', (req, res) => {
+  res.status(200).json({
+    message: "Hello from SmartSyllabus backend!",
+    timestamp: new Date().toISOString(),
+    method: req.method,
+    url: req.url
+  });
+});
+
 // Global error handling middleware
 app.use((err, req, res, next) => {
   console.error('❌ Unhandled Error:', err.stack);
