@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: smartsyllabus-backend
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node app.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        value: mongodb+srv://younussyed787070:B6TLB5EzPJiGsMxF@smartsyllabus.tiz58j8.mongodb.net/smartsyllabus?retryWrites=true&w=majority
+      - key: PORT
+        value: 10000 

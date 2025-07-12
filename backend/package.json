@@ -12,6 +12,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@vercel/node": "^5.3.5",
     "axios": "^1.10.0",
     "cors": "^2.8.5",
     "date-fns": "^4.1.0",
