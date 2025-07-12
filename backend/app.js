@@ -14,7 +14,8 @@ app.use(cors({
     'https://smartsyllabus.vercel.app',
     'https://smartsyllabus-aw4fxeytw-younussyed989s-projects.vercel.app',
     'https://smartsyllabus-omp6cb4sz-younussyed989s-projects.vercel.app',
-    'https://smartsyllabus-frontend.onrender.com',
+    'https://smartsyllabus-frontend.vercel.app',
+    'https://smartsyllabus-frontend.vercel.app',
     'http://localhost:3000',
     'http://localhost:5173'
   ],
