@@ -10,16 +10,26 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors({
-  origin: [
-    'https://smartsyllabus.vercel.app',
-    'https://smartsyllabus-frontend.vercel.app',
-    'https://smartsyllabus-frontend-git-main-younussyed989s-projects.vercel.app',
-    'https://smartsyllabus-frontend-younussyed989s-projects.vercel.app',
-    'https://smart-syllabus-git-main-younussyed989s-projects.vercel.app',
-    'https://smart-syllabus-younussyed989s-projects.vercel.app',
-    'http://localhost:3000',
-    'http://localhost:5173'
-  ],
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    const allowedOrigins = [
+      'https://smartsyllabus.vercel.app',
+      'https://smartsyllabus-frontend.vercel.app',
+      'http://localhost:3000',
+      'http://localhost:5173'
+    ];
+    
+    // Allow any Vercel domain for this project
+    const isVercelDomain = origin.includes('vercel.app') && origin.includes('smart-syllabus');
+    
+    if (allowedOrigins.includes(origin) || isVercelDomain) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));
 app.use(express.json());
