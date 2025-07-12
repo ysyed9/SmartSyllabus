@@ -84,3 +84,69 @@ The API will be available at `http://localhost:5000/api/*`
 2. **Database:** Use MongoDB Atlas or similar cloud database
 3. **Environment Variables:** Set all required environment variables in Vercel
 4. **CORS:** Update CORS origins to match your production frontend domain 
+
+---
+
+The error message:
+
+```json
+{"error":"Route not found"}
+```
+
+means that the `/api/hello` route does **not** exist in your current backend deployment on Render.
+
+---
+
+## Why is this happening?
+
+- On Render, your backend is running from `backend/app.js`, which uses the original Express setup.
+- The `/api/hello` route only exists in your Vercel-compatible API structure (`backend/api/hello.js`), **not** in your `app.js` Express server.
+
+---
+
+## 🛠️ How to Fix
+
+### Option 1: Add a `/api/hello` Route to `app.js` (Recommended for Render)
+
+Add this to your `backend/app.js` before the 404 handler:
+
+```js
+app.get('/api/hello', (req, res) => {
+  res.status(200).json({
+    message: "Hello from SmartSyllabus backend!",
+    timestamp: new Date().toISOString(),
+    method: req.method,
+    url: req.url
+  });
+});
+```
+
+**Then redeploy to Render.**
+
+---
+
+### Option 2: Use Only the Vercel API Structure (Not recommended for Render)
+
+- The Vercel `/api/hello` route works only if you deploy the backend to Vercel, not Render.
+
+---
+
+## ✅ What to Do Next
+
+1. **Add the `/api/hello` route to your `app.js` as shown above.**
+2. **Push your changes to GitHub.**
+3. **Render will redeploy automatically.**
+4. **Test:**  
+   [https://smartsyllabus.onrender.com/api/hello](https://smartsyllabus.onrender.com/api/hello)
+
+You should see:
+```json
+{
+  "message": "Hello from SmartSyllabus backend!",
+  ...
+}
+```
+
+---
+
+Let me know if you want me to make this code change for you! 
