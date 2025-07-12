@@ -86,7 +86,7 @@ A comprehensive syllabus management system that allows users to upload, organize
    
    Create a `.env` file in the backend directory:
    ```env
-   MONGODB_URI=mongodb://localhost:27017/syllabus-app
+   MONGODB_URI=mongodb+srv://younussyed787070:<naruto009>@smartsyllabus.tiz58j8.mongodb.net/syllabus-app?retryWrites=true&w=majority&appName=SmartSyllabus
    PORT=5000
    ```
 

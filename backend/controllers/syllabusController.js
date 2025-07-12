@@ -31,42 +31,49 @@ const upload = multer({
 }).single('syllabus');
 
 // Get all syllabi
-exports.getAllSyllabi = async (req, res) => {
+exports.getAllSyllabi = async (req, res, next) => {
   try {
+    console.log('getAllSyllabi called');
     const syllabi = await Syllabus.find().sort({ createdAt: -1 });
     res.json(syllabi);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  } catch (err) {
+    console.error('Error in getAllSyllabi:', err);
+    next(err);
   }
 };
 
 // Get single syllabus
-exports.getSyllabus = async (req, res) => {
+exports.getSyllabus = async (req, res, next) => {
   try {
+    console.log('getSyllabus called');
     const syllabus = await Syllabus.findById(req.params.id);
     if (!syllabus) {
       return res.status(404).json({ error: 'Syllabus not found' });
     }
     res.json(syllabus);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  } catch (err) {
+    console.error('Error in getSyllabus:', err);
+    next(err);
   }
 };
 
 // Create new syllabus
-exports.createSyllabus = async (req, res) => {
+exports.createSyllabus = async (req, res, next) => {
   try {
+    console.log('createSyllabus called');
     const syllabus = new Syllabus(req.body);
     const savedSyllabus = await syllabus.save();
     res.status(201).json(savedSyllabus);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
+  } catch (err) {
+    console.error('Error in createSyllabus:', err);
+    next(err);
   }
 };
 
 // Update syllabus
-exports.updateSyllabus = async (req, res) => {
+exports.updateSyllabus = async (req, res, next) => {
   try {
+    console.log('updateSyllabus called');
     const syllabus = await Syllabus.findByIdAndUpdate(
       req.params.id,
       req.body,
@@ -76,14 +83,16 @@ exports.updateSyllabus = async (req, res) => {
       return res.status(404).json({ error: 'Syllabus not found' });
     }
     res.json(syllabus);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
+  } catch (err) {
+    console.error('Error in updateSyllabus:', err);
+    next(err);
   }
 };
 
 // Delete syllabus
-exports.deleteSyllabus = async (req, res) => {
+exports.deleteSyllabus = async (req, res, next) => {
   try {
+    console.log('deleteSyllabus called');
     const syllabus = await Syllabus.findByIdAndDelete(req.params.id);
     if (!syllabus) {
       return res.status(404).json({ error: 'Syllabus not found' });
@@ -98,70 +107,78 @@ exports.deleteSyllabus = async (req, res) => {
     }
     
     res.json({ message: 'Syllabus deleted successfully' });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  } catch (err) {
+    console.error('Error in deleteSyllabus:', err);
+    next(err);
   }
 };
 
 // Upload syllabus file and extract text
-exports.uploadSyllabus = async (req, res) => {
-  upload(req, res, async (err) => {
-    if (err) {
-      return res.status(400).json({ error: err.message });
-    }
-
-    if (!req.file) {
-      return res.status(400).json({ error: 'No file uploaded' });
-    }
-
-    try {
-      let extractedText = '';
-      const filePath = req.file.path;
-      const fileType = req.file.mimetype;
-
-      // Extract text based on file type
-      if (fileType === 'application/pdf') {
-        const dataBuffer = fs.readFileSync(filePath);
-        const data = await pdfParse(dataBuffer);
-        extractedText = data.text;
-      } else if (fileType.startsWith('image/')) {
-        // Use Tesseract.js for OCR
-        const worker = await createWorker();
-        await worker.loadLanguage('eng');
-        await worker.initialize('eng');
-        const { data: { text } } = await worker.recognize(filePath);
-        await worker.terminate();
-        extractedText = text;
+exports.uploadSyllabus = async (req, res, next) => {
+  try {
+    console.log('uploadSyllabus called');
+    upload(req, res, async (err) => {
+      if (err) {
+        return res.status(400).json({ error: err.message });
       }
 
-      // Create syllabus with extracted text
-      const syllabusData = {
-        ...req.body,
-        originalFile: {
-          filename: req.file.originalname,
-          path: req.file.path,
-          mimetype: req.file.mimetype
-        },
-        extractedText: extractedText
-      };
-
-      const syllabus = new Syllabus(syllabusData);
-      const savedSyllabus = await syllabus.save();
-
-      res.status(201).json(savedSyllabus);
-    } catch (error) {
-      // Clean up uploaded file if processing fails
-      if (req.file && fs.existsSync(req.file.path)) {
-        fs.unlinkSync(req.file.path);
+      if (!req.file) {
+        return res.status(400).json({ error: 'No file uploaded' });
       }
-      res.status(500).json({ error: error.message });
-    }
-  });
+
+      try {
+        let extractedText = '';
+        const filePath = req.file.path;
+        const fileType = req.file.mimetype;
+
+        // Extract text based on file type
+        if (fileType === 'application/pdf') {
+          const dataBuffer = fs.readFileSync(filePath);
+          const data = await pdfParse(dataBuffer);
+          extractedText = data.text;
+        } else if (fileType.startsWith('image/')) {
+          // Use Tesseract.js for OCR
+          const worker = await createWorker();
+          await worker.loadLanguage('eng');
+          await worker.initialize('eng');
+          const { data: { text } } = await worker.recognize(filePath);
+          await worker.terminate();
+          extractedText = text;
+        }
+
+        // Create syllabus with extracted text
+        const syllabusData = {
+          ...req.body,
+          originalFile: {
+            filename: req.file.originalname,
+            path: req.file.path,
+            mimetype: req.file.mimetype
+          },
+          extractedText: extractedText
+        };
+
+        const syllabus = new Syllabus(syllabusData);
+        const savedSyllabus = await syllabus.save();
+
+        res.status(201).json(savedSyllabus);
+      } catch (error) {
+        // Clean up uploaded file if processing fails
+        if (req.file && fs.existsSync(req.file.path)) {
+          fs.unlinkSync(req.file.path);
+        }
+        res.status(500).json({ error: error.message });
+      }
+    });
+  } catch (err) {
+    console.error('Error in uploadSyllabus:', err);
+    next(err);
+  }
 };
 
 // Add assignment to syllabus
-exports.addAssignment = async (req, res) => {
+exports.addAssignment = async (req, res, next) => {
   try {
+    console.log('addAssignment called');
     const syllabus = await Syllabus.findById(req.params.id);
     if (!syllabus) {
       return res.status(404).json({ error: 'Syllabus not found' });
@@ -170,14 +187,16 @@ exports.addAssignment = async (req, res) => {
     syllabus.assignments.push(req.body);
     const updatedSyllabus = await syllabus.save();
     res.json(updatedSyllabus);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
+  } catch (err) {
+    console.error('Error in addAssignment:', err);
+    next(err);
   }
 };
 
 // Update assignment
-exports.updateAssignment = async (req, res) => {
+exports.updateAssignment = async (req, res, next) => {
   try {
+    console.log('updateAssignment called');
     const { syllabusId, assignmentId } = req.params;
     const syllabus = await Syllabus.findById(syllabusId);
     
@@ -193,14 +212,16 @@ exports.updateAssignment = async (req, res) => {
     Object.assign(assignment, req.body);
     const updatedSyllabus = await syllabus.save();
     res.json(updatedSyllabus);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
+  } catch (err) {
+    console.error('Error in updateAssignment:', err);
+    next(err);
   }
 };
 
 // Delete assignment
-exports.deleteAssignment = async (req, res) => {
+exports.deleteAssignment = async (req, res, next) => {
   try {
+    console.log('deleteAssignment called');
     const { syllabusId, assignmentId } = req.params;
     const syllabus = await Syllabus.findById(syllabusId);
     
@@ -211,7 +232,8 @@ exports.deleteAssignment = async (req, res) => {
     syllabus.assignments.pull(assignmentId);
     const updatedSyllabus = await syllabus.save();
     res.json(updatedSyllabus);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
+  } catch (err) {
+    console.error('Error in deleteAssignment:', err);
+    next(err);
   }
 }; 

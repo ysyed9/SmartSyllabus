@@ -3,8 +3,9 @@ const { createEvent } = require('ics');
 const { format } = require('date-fns');
 
 // Generate calendar events from syllabus assignments
-exports.generateCalendar = async (req, res) => {
+exports.generateCalendar = async (req, res, next) => {
   try {
+    console.log('generateCalendar called');
     const { syllabusId } = req.params;
     const syllabus = await Syllabus.findById(syllabusId);
     
@@ -49,14 +50,16 @@ exports.generateCalendar = async (req, res) => {
     res.setHeader('Content-Disposition', `attachment; filename="${syllabus.courseCode}-calendar.ics"`);
     
     res.send(value);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  } catch (err) {
+    console.error('Error in generateCalendar:', err);
+    next(err);
   }
 };
 
 // Generate calendar for all syllabi
-exports.generateAllCalendars = async (req, res) => {
+exports.generateAllCalendars = async (req, res, next) => {
   try {
+    console.log('generateAllCalendars called');
     const syllabi = await Syllabus.find();
     const events = [];
     
@@ -94,14 +97,16 @@ exports.generateAllCalendars = async (req, res) => {
     res.setHeader('Content-Disposition', 'attachment; filename="all-syllabi-calendar.ics"');
     
     res.send(value);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  } catch (err) {
+    console.error('Error in generateAllCalendars:', err);
+    next(err);
   }
 };
 
 // Get upcoming assignments
-exports.getUpcomingAssignments = async (req, res) => {
+exports.getUpcomingAssignments = async (req, res, next) => {
   try {
+    console.log('getUpcomingAssignments called');
     const { days = 30 } = req.query;
     const cutoffDate = new Date();
     cutoffDate.setDate(cutoffDate.getDate() + parseInt(days));
@@ -131,7 +136,8 @@ exports.getUpcomingAssignments = async (req, res) => {
     upcomingAssignments.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
     
     res.json(upcomingAssignments);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  } catch (err) {
+    console.error('Error in getUpcomingAssignments:', err);
+    next(err);
   }
 }; 
