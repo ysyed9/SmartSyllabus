@@ -3,7 +3,7 @@ services:
   - type: web
     name: smartsyllabus-backend
     env: node
-    plan: free
+    plan: starter
     buildCommand: cd backend && npm install
     startCommand: cd backend && npm start
     envVars:
@@ -19,7 +19,7 @@ services:
   - type: web
     name: smartsyllabus-frontend
     env: static
-    plan: free
+    plan: starter
     buildCommand: cd frontend && npm install && VITE_API_URL=https://smartsyllabus-backend.onrender.com/api npm run build
     staticPublishPath: ./frontend/dist
     envVars:
