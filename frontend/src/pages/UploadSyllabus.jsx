@@ -64,11 +64,7 @@ const UploadSyllabus = () => {
       return
     }
 
-    if (!formData.courseCode || !formData.courseName || !formData.instructor) {
-      setError('Please fill in all required fields')
-      return
-    }
-
+    // Fields are now optional since backend will auto-fill them
     setLoading(true)
     setError('')
 
@@ -76,11 +72,15 @@ const UploadSyllabus = () => {
       const data = new FormData()
       data.append('syllabus', file)
       
-      // Append form data
+      // Append form data (only non-empty values to allow backend auto-fill)
       Object.keys(formData).forEach(key => {
         if (typeof formData[key] === 'object') {
-          data.append(key, JSON.stringify(formData[key]))
-        } else {
+          // Only send contact info if any field is filled
+          const hasContactInfo = Object.values(formData[key]).some(val => val.trim() !== '')
+          if (hasContactInfo) {
+            data.append(key, JSON.stringify(formData[key]))
+          }
+        } else if (formData[key] && formData[key].toString().trim() !== '') {
           data.append(key, formData[key])
         }
       })
@@ -152,11 +152,14 @@ const UploadSyllabus = () => {
         {/* Course Information */}
         <div className="card p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Course Information</h2>
+          <p className="text-sm text-gray-600 mb-4">
+            These fields will be automatically filled from your syllabus, but you can also fill them manually.
+          </p>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Course Code *
+                Course Code
               </label>
               <input
                 type="text"
@@ -164,14 +167,13 @@ const UploadSyllabus = () => {
                 value={formData.courseCode}
                 onChange={handleInputChange}
                 className="input"
-                placeholder="e.g., CS101"
-                required
+                placeholder="e.g., CS101 (will be auto-filled)"
               />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Course Name *
+                Course Name
               </label>
               <input
                 type="text"
@@ -179,14 +181,13 @@ const UploadSyllabus = () => {
                 value={formData.courseName}
                 onChange={handleInputChange}
                 className="input"
-                placeholder="e.g., Introduction to Computer Science"
-                required
+                placeholder="e.g., Introduction to Computer Science (will be auto-filled)"
               />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Instructor *
+                Instructor
               </label>
               <input
                 type="text"
@@ -194,23 +195,21 @@ const UploadSyllabus = () => {
                 value={formData.instructor}
                 onChange={handleInputChange}
                 className="input"
-                placeholder="e.g., Dr. John Smith"
-                required
+                placeholder="e.g., Dr. John Smith (will be auto-filled)"
               />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Semester *
+                Semester
               </label>
               <select
                 name="semester"
                 value={formData.semester}
                 onChange={handleInputChange}
                 className="input"
-                required
               >
-                <option value="">Select semester</option>
+                <option value="">Select semester (will be auto-filled)</option>
                 <option value="Fall">Fall</option>
                 <option value="Spring">Spring</option>
                 <option value="Summer">Summer</option>
@@ -220,7 +219,7 @@ const UploadSyllabus = () => {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Year *
+                Year
               </label>
               <input
                 type="number"
@@ -230,7 +229,7 @@ const UploadSyllabus = () => {
                 className="input"
                 min="2020"
                 max="2030"
-                required
+                placeholder="Will be auto-filled"
               />
             </div>
 
@@ -336,7 +335,7 @@ const UploadSyllabus = () => {
             className="btn btn-primary"
             disabled={loading}
           >
-            {loading ? 'Uploading...' : 'Upload Syllabus'}
+            {loading ? 'Processing...' : 'Upload & Auto-Fill Syllabus'}
           </button>
         </div>
       </form>

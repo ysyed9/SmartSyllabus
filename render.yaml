@@ -1,0 +1,31 @@
+services:
+  # Backend API Service
+  - type: web
+    name: smartsyllabus-backend
+    env: node
+    plan: free
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        sync: false
+      - key: PORT
+        value: 10000
+    healthCheckPath: /api/syllabi
+
+  # Frontend Service
+  - type: web
+    name: smartsyllabus-frontend
+    env: static
+    plan: free
+    buildCommand: cd frontend && npm install && VITE_API_URL=https://smartsyllabus-backend.onrender.com/api npm run build
+    staticPublishPath: ./frontend/dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://smartsyllabus-backend.onrender.com/api
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html 

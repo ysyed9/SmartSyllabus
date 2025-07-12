@@ -4,7 +4,7 @@ import axios from 'axios'
 const SyllabusContext = createContext()
 
 // API base URL - always use the full backend URL
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://smartsyllabus-backend-bhhx0t5z4-younussyed989s-projects.vercel.app/api'
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
 
 const initialState = {
   syllabi: [],
