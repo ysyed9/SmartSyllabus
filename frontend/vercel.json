@@ -13,6 +13,6 @@
     }
   ],
   "env": {
-    "VITE_API_URL": "https://your-render-backend-url.onrender.com/api"
+    "VITE_API_URL": "https://smartsyllabus.onrender.com/api"
   }
 } 
